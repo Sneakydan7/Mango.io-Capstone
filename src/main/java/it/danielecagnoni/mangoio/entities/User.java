@@ -9,7 +9,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pw.mihou.jaikan.models.Manga;
 
 import java.util.*;
 
@@ -37,8 +36,6 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<UserRole> roles = new HashSet<>();
-
-    private Set<Manga> mangaList = new HashSet<>();
 
 
     public User(String email, String username, String password, String name, String surname) {
