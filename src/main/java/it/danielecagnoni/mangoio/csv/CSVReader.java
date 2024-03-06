@@ -26,7 +26,7 @@ public class CSVReader {
         FileReader file = new FileReader("C:\\Users\\danie\\OneDrive\\Documents\\GitHub\\Mango.io-Capstone\\src\\main\\java\\it\\danielecagnoni\\mangoio\\files\\mal_manga_df.csv");
         List<MyManga> beans = new CsvToBeanBuilder<MyManga>(file)
                 .withType(MyManga.class)
-                .withSeparator(';')
+                .withSeparator(',')
                 .withSkipLines(1)
                 .build().parse();
         if (myMangaDAO != null) {

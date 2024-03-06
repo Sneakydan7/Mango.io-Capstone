@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Table(name = "mangas")
 @Getter
@@ -22,27 +20,27 @@ public class MyManga {
     @CsvBindByPosition(position = 2)
     public String type;
     @CsvBindByPosition(position = 3)
-    public int chapters;
+    public Double chapters;
     @CsvBindByPosition(position = 4)
-    public int volumes;
+    public Double volumes;
     @CsvBindByPosition(position = 5)
     public String status;
     @CsvBindByPosition(position = 6)
-    public List<String> genres;
+    public String genres;
     @CsvBindByPosition(position = 7)
     public double score;
     @CsvBindByPosition(position = 8)
-    public int rank;
+    public Double rank;
     @CsvBindByPosition(position = 9)
-    public List<String> authors;
+    public String authors;
     @CsvBindByPosition(position = 10)
-    public List<String> serializations;
+    public String serializations;
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
 
-    public MyManga(String title, Integer malId, String type, int chapters, int volumes, String status, List<String> genres, double score, int rank, List<String> authors, List<String> serializations) {
+    public MyManga(String title, Integer malId, String type, Double chapters, Double volumes, String status, String genres, double score, Double rank, String authors, String serializations) {
         this.title = title;
         this.malId = malId;
         this.type = type;
