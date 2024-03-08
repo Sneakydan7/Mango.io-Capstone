@@ -29,7 +29,7 @@ public class CSVReader {
                 .withSeparator(',')
                 .withSkipLines(1)
                 .build().parse();
-        if (myMangaDAO != null) {
+        if (myMangaDAO == null) {
             for (MyManga manga : beans) {
                 MyManga newManga = new MyManga(manga.getTitle(), manga.getMalId(), manga.getType(), manga.getChapters(), manga.getVolumes(), manga.getStatus(), manga.getGenres(), manga.getScore(), manga.getRank(), manga.getAuthors(), manga.getSerializations());
                 myMangaDAO.save(newManga);
