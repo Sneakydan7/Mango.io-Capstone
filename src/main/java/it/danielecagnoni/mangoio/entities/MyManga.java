@@ -14,33 +14,35 @@ import lombok.Setter;
 public class MyManga {
 
     @CsvBindByPosition(position = 0)
-    public String title;
+    private String title;
     @CsvBindByPosition(position = 1)
-    public Integer malId;
+    private Integer malId;
     @CsvBindByPosition(position = 2)
-    public String type;
+    private String type;
     @CsvBindByPosition(position = 3)
-    public Double chapters;
+    private Double chapters;
     @CsvBindByPosition(position = 4)
-    public Double volumes;
+    private Double volumes;
     @CsvBindByPosition(position = 5)
-    public String status;
+    private String status;
     @CsvBindByPosition(position = 6)
-    public String genres;
+    private String genres;
     @CsvBindByPosition(position = 7)
-    public double score;
+    private Double score;
     @CsvBindByPosition(position = 8)
-    public Double rank;
+    private Double rank;
     @CsvBindByPosition(position = 9)
-    public String authors;
+    private String authors;
     @CsvBindByPosition(position = 10)
-    public String serializations;
+    private String serializations;
+
+    private String imageUrl;
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
 
-    public MyManga(String title, Integer malId, String type, Double chapters, Double volumes, String status, String genres, double score, Double rank, String authors, String serializations) {
+    public MyManga(String title, Integer malId, String type, Double chapters, Double volumes, String status, String genres, Double score, Double rank, String authors, String serializations) {
         this.title = title;
         this.malId = malId;
         this.type = type;
