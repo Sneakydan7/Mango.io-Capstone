@@ -6,8 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MangoioApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MangoioApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MangoioApplication.class, args);
+    }
+
 
 }

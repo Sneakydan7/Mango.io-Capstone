@@ -15,7 +15,7 @@ public class MyMangaCTRL {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('USER' , 'ADMIN')")
-    public Page<MyManga> getMangas(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String orderBy) {
+    public Page<MyManga> getMangas(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size, @RequestParam(defaultValue = "id") String orderBy) {
         return this.myMangaSRV.getMyMangas(page, size, orderBy);
     }
 
@@ -37,5 +37,10 @@ public class MyMangaCTRL {
         return this.myMangaSRV.getMyMangaByTitle(title, page, size, orderBy);
     }
 
+    @GetMapping("/score")
+    @PreAuthorize("hasAnyAuthority('USER' , 'ADMIN')")
+    public Page<MyManga> getMangasByScore(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int size, @RequestParam(defaultValue = "score") String orderBy, @RequestParam(defaultValue = "desc") String orderDirection) {
+        return this.myMangaSRV.getMyMangasByScore(page, size, orderBy, orderDirection);
+    }
 
 }

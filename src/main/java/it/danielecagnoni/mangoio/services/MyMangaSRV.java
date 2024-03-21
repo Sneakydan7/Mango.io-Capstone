@@ -38,7 +38,16 @@ public class MyMangaSRV {
     public Page<MyManga> getMyMangaByTitle(String title, int pageNum, int size, String orderBy) {
         if (size > 100) size = 100;
         Pageable pageable = PageRequest.of(pageNum, size, Sort.by(orderBy));
-
         return myMangaDAO.findByTitleContainingIgnoreCase(title, pageable);
     }
+
+    public Page<MyManga> getMyMangasByScore(int pageNum, int size, String orderBy, String orderDirection) {
+        if (size > 100) size = 100;
+
+        Sort.Direction direction = Sort.Direction.fromString(orderDirection);
+        Pageable pageable = PageRequest.of(pageNum, size, direction, orderBy);
+
+        return myMangaDAO.findByScoreLessThanEqual(10, pageable);
+    }
+
 }

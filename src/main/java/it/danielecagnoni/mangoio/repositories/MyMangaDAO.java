@@ -15,5 +15,5 @@ public interface MyMangaDAO extends JpaRepository<MyManga, Long> {
     Page<MyManga> findByTitleContainingIgnoreCase(String title,
                                                   Pageable pageable);
 
-
+    Page<MyManga> findByScoreLessThanEqual(double score, Pageable pageable);
 }

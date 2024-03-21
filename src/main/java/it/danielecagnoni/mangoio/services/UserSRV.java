@@ -49,4 +49,6 @@ public class UserSRV {
         return userDAO.findByEmail(email).orElseThrow(() -> new RuntimeException("User with this email not found"));
 
     }
+
+   
 }
