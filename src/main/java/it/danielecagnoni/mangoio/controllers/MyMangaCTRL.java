@@ -43,4 +43,5 @@ public class MyMangaCTRL {
         return this.myMangaSRV.getMyMangasByScore(page, size, orderBy, orderDirection);
     }
 
+
 }

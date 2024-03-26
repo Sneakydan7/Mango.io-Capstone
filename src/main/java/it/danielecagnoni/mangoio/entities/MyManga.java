@@ -1,10 +1,14 @@
 package it.danielecagnoni.mangoio.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opencsv.bean.CsvBindByPosition;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "mangas")
@@ -41,6 +45,11 @@ public class MyManga {
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToMany(mappedBy = "myMangas", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<User> users = new LinkedHashSet<>();
+
 
     public MyManga(String title, Integer malId, String type, Double chapters, Double volumes, String status, String genres, Double score, Double rank, String authors, String serializations) {
         this.title = title;

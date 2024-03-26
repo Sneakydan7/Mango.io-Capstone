@@ -36,8 +36,12 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<UserRole> roles = new HashSet<>();
-    @OneToMany
-    private Set<MyManga> mangas = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_myMangas",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "myMangas_id"))
+    private Set<MyManga> myMangas = new LinkedHashSet<>();
 
     public User(String email, String username, String password, String name, String surname) {
         this.email = email;
@@ -74,6 +78,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addMyManga(MyManga manga) {
+        this.myMangas.add(manga);
+    }
+
+    public void removeMangaFromList(MyManga manga) {
+        this.myMangas.remove(manga);
+        manga.getUsers().remove(this);
     }
 }
 

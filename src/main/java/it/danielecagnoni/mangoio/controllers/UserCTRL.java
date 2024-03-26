@@ -1,9 +1,12 @@
 package it.danielecagnoni.mangoio.controllers;
 
+import it.danielecagnoni.mangoio.entities.MyManga;
 import it.danielecagnoni.mangoio.entities.User;
 import it.danielecagnoni.mangoio.exceptions.BadRequestException;
+import it.danielecagnoni.mangoio.payloads.MyMangaDTO;
 import it.danielecagnoni.mangoio.payloads.NewUserDTO;
 import it.danielecagnoni.mangoio.services.AuthSRV;
+import it.danielecagnoni.mangoio.services.MyMangaSRV;
 import it.danielecagnoni.mangoio.services.UserSRV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -24,6 +28,9 @@ public class UserCTRL {
 
     @Autowired
     private AuthSRV authSRV;
+
+    @Autowired
+    private MyMangaSRV myMangaSRV;
 
     @GetMapping
     @PreAuthorize("hasAuthority('USER' , 'ADMIN')")
@@ -66,5 +73,18 @@ public class UserCTRL {
         return this.userSRV.updateUserById(updatedUser, currentAuthenticatedUser.getId());
     }
 
+    @PostMapping("/me/add")
+    public void setMangaForMe(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody MyMangaDTO mangaId) {
+        this.myMangaSRV.setMangaForUser(mangaId, currentAuthenticatedUser);
+    }
 
+    @DeleteMapping("/me/remove/{mangaId}")
+    public void removeMangaForMe(@AuthenticationPrincipal User currentAuthrenticatedUser, @PathVariable Long mangaId) {
+        this.myMangaSRV.removeMangaForUser(mangaId, currentAuthrenticatedUser);
+    }
+
+    @GetMapping("/me/mangas")
+    public Set<MyManga> getMyMangasForMe(@AuthenticationPrincipal User currentAuthenticatedUser) {
+        return this.myMangaSRV.getUserMangas(currentAuthenticatedUser);
+    }
 }

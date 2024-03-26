@@ -1,8 +1,11 @@
 package it.danielecagnoni.mangoio.services;
 
 import it.danielecagnoni.mangoio.entities.MyManga;
+import it.danielecagnoni.mangoio.entities.User;
 import it.danielecagnoni.mangoio.exceptions.NotFoundException;
+import it.danielecagnoni.mangoio.payloads.MyMangaDTO;
 import it.danielecagnoni.mangoio.repositories.MyMangaDAO;
+import it.danielecagnoni.mangoio.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,10 +13,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class MyMangaSRV {
     @Autowired
     private MyMangaDAO myMangaDAO;
+    @Autowired
+    private UserSRV userSRV;
+    @Autowired
+    private UserDAO userDAO;
 
 
     public MyManga save(MyManga body) {
@@ -48,6 +57,25 @@ public class MyMangaSRV {
         Pageable pageable = PageRequest.of(pageNum, size, direction, orderBy);
 
         return myMangaDAO.findByScoreLessThanEqual(10, pageable);
+    }
+
+
+    public void setMangaForUser(MyMangaDTO mangaId, User user) {
+        MyManga found = getMyMangaById(mangaId.id());
+        User foundUser = userSRV.getUserById(user.getId());
+        foundUser.addMyManga(found);
+        userDAO.save(foundUser);
+    }
+
+    public void removeMangaForUser(Long mangaId, User user) {
+        MyManga found = getMyMangaById(mangaId);
+        User foundUser = userSRV.getUserById(user.getId());
+        foundUser.removeMangaFromList(found);
+        userDAO.save(foundUser);
+    }
+
+    public Set<MyManga> getUserMangas(User user) {
+        return user.getMyMangas();
     }
 
 }
