@@ -1,9 +1,11 @@
 package it.danielecagnoni.mangoio.controllers;
 
 import it.danielecagnoni.mangoio.entities.MyManga;
+import it.danielecagnoni.mangoio.entities.MyReadVolume;
 import it.danielecagnoni.mangoio.entities.User;
 import it.danielecagnoni.mangoio.exceptions.BadRequestException;
 import it.danielecagnoni.mangoio.payloads.MyMangaDTO;
+import it.danielecagnoni.mangoio.payloads.MyReadVolumeDTO;
 import it.danielecagnoni.mangoio.payloads.NewUserDTO;
 import it.danielecagnoni.mangoio.services.AuthSRV;
 import it.danielecagnoni.mangoio.services.MyMangaSRV;
@@ -31,6 +33,7 @@ public class UserCTRL {
 
     @Autowired
     private MyMangaSRV myMangaSRV;
+
 
     @GetMapping
     @PreAuthorize("hasAuthority('USER' , 'ADMIN')")
@@ -79,12 +82,25 @@ public class UserCTRL {
     }
 
     @DeleteMapping("/me/remove/{mangaId}")
-    public void removeMangaForMe(@AuthenticationPrincipal User currentAuthrenticatedUser, @PathVariable Long mangaId) {
-        this.myMangaSRV.removeMangaForUser(mangaId, currentAuthrenticatedUser);
+    public void removeMangaForMe(@AuthenticationPrincipal User currentAutheenticatedUser, @PathVariable Long mangaId) {
+        this.myMangaSRV.removeMangaForUser(mangaId, currentAutheenticatedUser);
     }
 
     @GetMapping("/me/mangas")
     public Set<MyManga> getMyMangasForMe(@AuthenticationPrincipal User currentAuthenticatedUser) {
         return this.myMangaSRV.getUserMangas(currentAuthenticatedUser);
     }
+
+
+    @PostMapping("/me/mangas/read")
+    public void setReadVolumesForMyManga(@RequestBody MyReadVolumeDTO payload, @AuthenticationPrincipal User currentAuthenticatedUser) {
+        myMangaSRV.addReadVolumeForManga(payload, currentAuthenticatedUser.getId());
+    }
+
+    @GetMapping("/me/mangas/read/{mangaId}")
+    public Set<MyReadVolume> getMyReadVolumes(@PathVariable Long mangaId, @AuthenticationPrincipal User currentAuthenticatedUser) {
+        return myMangaSRV.getMyReadVolumes(mangaId, currentAuthenticatedUser.getId());
+    }
+
+
 }

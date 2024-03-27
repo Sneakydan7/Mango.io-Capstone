@@ -1,10 +1,13 @@
 package it.danielecagnoni.mangoio.services;
 
 import it.danielecagnoni.mangoio.entities.MyManga;
+import it.danielecagnoni.mangoio.entities.MyReadVolume;
 import it.danielecagnoni.mangoio.entities.User;
 import it.danielecagnoni.mangoio.exceptions.NotFoundException;
 import it.danielecagnoni.mangoio.payloads.MyMangaDTO;
+import it.danielecagnoni.mangoio.payloads.MyReadVolumeDTO;
 import it.danielecagnoni.mangoio.repositories.MyMangaDAO;
+import it.danielecagnoni.mangoio.repositories.MyReadVolumeDAO;
 import it.danielecagnoni.mangoio.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class MyMangaSRV {
@@ -23,6 +27,8 @@ public class MyMangaSRV {
     private UserSRV userSRV;
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private MyReadVolumeDAO myReadVolumeDAO;
 
 
     public MyManga save(MyManga body) {
@@ -76,6 +82,27 @@ public class MyMangaSRV {
 
     public Set<MyManga> getUserMangas(User user) {
         return user.getMyMangas();
+    }
+
+
+    public void addReadVolumeForManga(MyReadVolumeDTO payload, UUID userId) {
+        MyManga foundManga = getMyMangaById(payload.mangaId());
+        User foundUser = userSRV.getUserById(userId);
+        MyReadVolume newVolume = new MyReadVolume();
+        newVolume.setVolNumber(payload.volNumber());
+        newVolume.setUser(foundUser);
+        newVolume.setManga(foundManga);
+        myReadVolumeDAO.save(newVolume);
+
+        // CONTROLLARE SE GIA ESISTE
+
+    }
+
+
+    public Set<MyReadVolume> getMyReadVolumes(Long mangaId, UUID userId) {
+        MyManga foundManga = getMyMangaById(mangaId);
+        User foundUser = userSRV.getUserById(userId);
+        return myReadVolumeDAO.findByMangaAndUser(foundManga, foundUser);
     }
 
 }

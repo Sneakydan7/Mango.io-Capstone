@@ -3,8 +3,9 @@ package it.danielecagnoni.mangoio.services;
 import it.danielecagnoni.mangoio.entities.User;
 import it.danielecagnoni.mangoio.exceptions.UUIDNotFoundException;
 import it.danielecagnoni.mangoio.payloads.NewUserDTO;
+import it.danielecagnoni.mangoio.repositories.MyReadVolumeDAO;
 import it.danielecagnoni.mangoio.repositories.UserDAO;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserSRV {
-    @Autowired
-    private UserDAO userDAO;
+
+    private final UserDAO userDAO;
+
+
+    private final MyReadVolumeDAO myReadVolumeDAO;
 
     public Page<User> getUsers(int pageNum, int size, String orderBy) {
         if (size > 100) size = 100;

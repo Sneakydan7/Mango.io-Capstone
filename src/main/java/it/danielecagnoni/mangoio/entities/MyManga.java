@@ -40,6 +40,7 @@ public class MyManga {
     @CsvBindByPosition(position = 10)
     private String serializations;
 
+
     private String imageUrl;
     @Id
     @GeneratedValue
