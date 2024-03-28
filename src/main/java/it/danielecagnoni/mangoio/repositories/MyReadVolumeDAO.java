@@ -12,4 +12,6 @@ import java.util.Set;
 public interface MyReadVolumeDAO extends JpaRepository<MyReadVolume, Long> {
 
     public Set<MyReadVolume> findByMangaAndUser(MyManga manga, User user);
+
+    MyReadVolume findByUserAndMangaAndVolNumber(User user, MyManga manga, Double volNumber);
 }

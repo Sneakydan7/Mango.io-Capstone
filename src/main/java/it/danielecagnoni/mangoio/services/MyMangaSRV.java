@@ -88,14 +88,17 @@ public class MyMangaSRV {
     public void addReadVolumeForManga(MyReadVolumeDTO payload, UUID userId) {
         MyManga foundManga = getMyMangaById(payload.mangaId());
         User foundUser = userSRV.getUserById(userId);
-        MyReadVolume newVolume = new MyReadVolume();
-        newVolume.setVolNumber(payload.volNumber());
-        newVolume.setUser(foundUser);
-        newVolume.setManga(foundManga);
-        myReadVolumeDAO.save(newVolume);
-
-        // CONTROLLARE SE GIA ESISTE
-
+        
+        MyReadVolume existingVolume = myReadVolumeDAO.findByUserAndMangaAndVolNumber(foundUser, foundManga, payload.volNumber());
+        if (existingVolume != null) {
+            throw new RuntimeException("Volume already exists for manga: " + foundManga.getId() + ", volume number: " + payload.volNumber());
+        } else {
+            MyReadVolume newVolume = new MyReadVolume();
+            newVolume.setVolNumber(payload.volNumber());
+            newVolume.setUser(foundUser);
+            newVolume.setManga(foundManga);
+            myReadVolumeDAO.save(newVolume);
+        }
     }
 
 
