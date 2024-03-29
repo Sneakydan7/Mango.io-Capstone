@@ -81,14 +81,20 @@ public class MyMangaSRV {
     }
 
     public Set<MyManga> getUserMangas(User user) {
-        return user.getMyMangas();
+        Set<MyManga> userMangas = user.getMyMangas();
+        for (MyManga myManga : userMangas) {
+            Double totalVolumesForManga = myManga.getVolumes();
+            Long totalVolumesForUserManga = myReadVolumeDAO.countByUserAndManga(user, myManga);
+            myManga.setRead(totalVolumesForUserManga.longValue() == totalVolumesForManga);
+        }
+        return userMangas;
     }
 
 
     public void addReadVolumeForManga(MyReadVolumeDTO payload, UUID userId) {
         MyManga foundManga = getMyMangaById(payload.mangaId());
         User foundUser = userSRV.getUserById(userId);
-        
+
         MyReadVolume existingVolume = myReadVolumeDAO.findByUserAndMangaAndVolNumber(foundUser, foundManga, payload.volNumber());
         if (existingVolume != null) {
             throw new RuntimeException("Volume already exists for manga: " + foundManga.getId() + ", volume number: " + payload.volNumber());

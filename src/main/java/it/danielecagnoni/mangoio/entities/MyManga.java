@@ -40,6 +40,9 @@ public class MyManga {
     @CsvBindByPosition(position = 10)
     private String serializations;
 
+    @Transient
+    private boolean isRead = false;
+
 
     private String imageUrl;
     @Id
